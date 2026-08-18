@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/scripts/">
+    <File Path=".github/scripts/validate-schemas.js" />
+  </Folder>
+  <Folder Name="/.github/workflows/">
+    <File Path=".github/workflows/validate-schemas.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="test-ajv.csproj" />
+</Solution>
