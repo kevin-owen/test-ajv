@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.test.com/objects/v1/another-object.schema.json",
+  "title": "Generic test object",
+  "description": "Represents a generic test object",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The unique identifier",
+      "type": "string"
+    },
+    "name": {
+      "description": "A name used to describe the object",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "name"
+  ],
+  "goat": "banana", 
+  "examples": [
+    {
+      "id": "urn:object:1234567890",
+      "name": "my object"
+    }
+  ]
+}

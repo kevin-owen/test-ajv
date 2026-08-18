@@ -18,16 +18,89 @@ function getAjvInstance(version) {
   if (ajvInstances[normalized]) return ajvInstances[normalized];
 
   let Ajv;
+
   if (normalized.includes('2020') || normalized === 'draft2020') {
     Ajv = require('ajv/dist/2020');
-  } else if (normalized.includes('2019') || normalized === 'draft2019') {
+  }
+  else if (normalized.includes('2019') || normalized === 'draft2019') {
     Ajv = require('ajv/dist/2019');
-  } else {
+  }
+  else {
     Ajv = require('ajv'); // Defaults to Draft 7
   }
 
   ajvInstances[normalized] = new Ajv({ allErrors: true });
   return ajvInstances[normalized];
+}
+
+function getSchemaVersion(schema) {
+  // Detect version from the $schema tag, or fall back to default
+  let schemaVersion = DEFAULT_VERSION;
+
+  if (schema.$schema && typeof schema.$schema === 'string') {
+    schemaVersion = schema.$schema;
+  }
+
+  return schemaVersion;
+}
+
+function writeSeperator() {
+  console.log('────────────────────────────────────────────────────────────────────');
+}
+
+function validateSchemaFile(file) {
+  try {
+
+    const rawContent = fs.readFileSync(file, 'utf8');
+    const schema = JSON.parse(rawContent);
+    const schemaVersion = getSchemaVersion(schema);
+    const ajv = getAjvInstance(schemaVersion);
+
+    // 3. Print out clean tracking logs for audit visibility
+    const versionLabel = schemaVersion.includes('http')
+      ? schemaVersion.split('/').slice(-2, -1)[0] // Extracts 'draft-07' or '2020-12' cleanly
+      : schemaVersion;
+
+    console.log(`Testing: ${file}`);
+    console.log(`Version: ${schemaVersion}`);
+
+    // 4. Validate the schema structure
+    const isValidSchema = ajv.validateSchema(schema);
+
+    if (!isValidSchema) {
+
+      console.error(`Is Valid: ❌`);
+      console.error(JSON.stringify(ajv.errors, null, 2));
+      totalErrors++;
+
+    } else {
+
+      const validate = ajv.compile(schema);
+      console.log(`Schema valid: ✅`);
+
+      // Manually loop through your metadata examples to test them
+      schema.examples.forEach((example, index) => {
+        const isValid = validate(example);
+        if (isValid) {
+          console.log(`Example #${index + 1} valid: ✅`);
+        }
+        else {
+          console.log(`Example #${index + 1} valid: ❌`);
+          console.log("Errors:", validate.errors);
+          totalErrors++;
+        }
+      });
+    }
+
+  }
+  catch (err) {
+    console.error(`Is Valid: ❌`);
+    console.error(`Error:`, err.message);
+    totalErrors++;
+  }
+  finally {
+    writeSeperator();
+  }
 }
 
 // Resolve wildcard glob patterns for schemas
@@ -38,71 +111,13 @@ if (schemaFiles.length === 0) {
   process.exit(1);
 }
 
-console.log(`🔍 Found ${schemaFiles.length} schema file(s) to validate.\n`);
-
 let totalErrors = 0;
 
-schemaFiles.forEach(file => {
-  try {
-    const rawContent = fs.readFileSync(file, 'utf8');
-    const schema = JSON.parse(rawContent);
+writeSeperator();
+console.log(`\n🔍 Found ${schemaFiles.length} schema file(s) to validate.\n`);
+writeSeperator();
 
-    // 1. Detect version from the $schema tag, or fall back to default
-    let chosenVersion = DEFAULT_VERSION;
-    if (schema.$schema && typeof schema.$schema === 'string') {
-      chosenVersion = schema.$schema;
-    }
-
-    // 2. Fetch the corresponding validation engine
-    const ajv = getAjvInstance(chosenVersion);
-
-    // 3. Print out clean tracking logs for audit visibility
-    const versionLabel = chosenVersion.includes('http')
-      ? chosenVersion.split('/').slice(-2, -1)[0] // Extracts 'draft-07' or '2020-12' cleanly
-      : chosenVersion;
-
-    console.log(`Testing [${versionLabel}] -> ${file}`);
-
-    // 4. Validate the schema structure
-    const isValidSchema = ajv.validateSchema(schema);
-
-    if (!isValidSchema) {
-
-      console.error(`❌ Invalid Schema Structure in: ${file}`);
-      console.error(JSON.stringify(ajv.errors, null, 2));
-      totalErrors++;
-
-    } else {
-
-      console.log(`✅ Valid Schema: ${file}`);
-
-      const validate = ajv.compile(schema);
-      // Manually loop through your metadata examples to test them
-      schema.examples.forEach((example, index) => {
-        const isValid = validate(example);
-        if (isValid) {
-          console.log(`   ✅ Example #${index} is valid`);
-        }
-        else {
-          console.log(`   ❌ Example #${index} is NOT valid`);
-          console.log("Errors:", validate.errors);
-          totalErrors++;
-        }
-      });
-    }
-
-  } catch (err) {
-
-    console.error(`❌ Failed to process file ${file}:`, err.message);
-    totalErrors++;
-
-  } finally {
-
-    console.log('-------------------------------------------------');
-
-  }
-
-});
+schemaFiles.forEach(file => validateSchemaFile(file));
 
 // Block CI pipeline if structural issues exist
 if (totalErrors > 0) {
