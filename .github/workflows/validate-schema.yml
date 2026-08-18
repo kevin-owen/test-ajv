@@ -16,6 +16,6 @@ jobs:
 
       - name: Validate Schema Structure
         run: |
-          npm install -g ajv-cli ajv-formats
+          npm install -g ajv-cli
           # -c compiles the schema to check for syntax and draft compliance
           ajv compile -s **/*.schema.json --spec=draft2020
