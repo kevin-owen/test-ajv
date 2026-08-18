@@ -91,15 +91,17 @@ schemaFiles.forEach(file => {
       });
     }
 
-    console.log('---');
-
   } catch (err) {
 
     console.error(`❌ Failed to process file ${file}:`, err.message);
     totalErrors++;
-    console.log('---');
+
+  } finally {
+
+    console.log('-------------------------------------------------');
 
   }
+
 });
 
 // Block CI pipeline if structural issues exist
