@@ -69,8 +69,8 @@ function validateSchemaFile(file) {
 
     if (!isValidSchema) {
 
-      console.error(`Is Valid: ❌`);
-      console.error(JSON.stringify(ajv.errors, null, 2));
+      console.log(`Schema valid: ❌`);
+      console.log(JSON.stringify(ajv.errors, null, 2));
       totalErrors++;
 
     } else {
@@ -94,8 +94,8 @@ function validateSchemaFile(file) {
 
   }
   catch (err) {
-    console.error(`Is Valid: ❌`);
-    console.error(`Error:`, err.message);
+    console.log(`Schema valid: ❌`);
+    console.log(`Error:`, err.message);
     totalErrors++;
   }
   finally {
