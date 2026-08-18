@@ -17,7 +17,7 @@ function getAjvInstance(version) {
   if (ajvInstances[normalized]) return ajvInstances[normalized];
 
   let Ajv;
-  if (ncormalized.includes('2020') || normalized === 'draft2020') {
+  if (normalized.includes('2020') || normalized === 'draft2020') {
     Ajv = require('ajv/dist/2020');
   } else if (normalized.includes('2019') || normalized === 'draft2019') {
     Ajv = require('ajv/dist/2019');
