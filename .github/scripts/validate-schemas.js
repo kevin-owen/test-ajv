@@ -85,6 +85,7 @@ schemaFiles.forEach(file => {
         }
         else {
           console.log(`   ❌ Example #${index} is NOT valid`);
+          console.log("Errors:", validate.errors);
           totalErrors++;
         }
       });
