@@ -1,0 +1,21 @@
+name: Validate JSON Schema Definition
+
+on: [push, pull_request]
+
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Validate Schema Structure
+        run: |
+          npm install -g ajv-cli ajv-formats
+          # -c compiles the schema to check for syntax and draft compliance
+          ajv compile -s **/*.schema.json --spec=draft2020

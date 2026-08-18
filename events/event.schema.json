@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.test.com/events/v1/event.schema.json",
+  "title": "Generic test event",
+  "description": "Represents a real-time event for a transport service",
+  "type": "object",
+  "properties": {
+    "protocolVersion": {
+      "description": "Protocol version as integer greater than 0",
+      "type": "integer",
+      "const": 1
+    },
+    "eventId": {
+      "description": "The event unique identifier",
+      "type": "string"
+    },
+    "eventName": {
+      "description": "A name used to describe the event type being raised",
+      "type": "string"
+    },
+    "timestamp": {
+      "description": "Event publication time in milliseconds since the UNIX epoch (January 1, 1970 00:00:00 UTC)",
+      "type": "integer"
+    },
+    "content": {
+      "description": "The content of the event, usually any of the defined models in the protocol.",
+      "type": "object"
+    }
+  },
+  "required": [
+    "protocolVersion",
+    "eventId",
+    "eventName",
+    "timestamp",
+    "content"
+  ],
+  "examples": [
+    {
+      "protocolVersion": 1,
+      "eventId": "urn:realtime:event:1234567890",
+      "eventName": "service-status-changed",
+      "timestamp": 1622548800000,
+      "content": {
+        "serviceId": "urn:realtime:service:12345",
+        "status": "delayed",
+        "reason": "signal-failure"
+      }
+    }
+  ]
+}
