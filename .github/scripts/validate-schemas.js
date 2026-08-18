@@ -12,6 +12,7 @@ if (!SCHEMA_PATTERN) {
 
 // Helper to load and cache the right Ajv instance for a given version string
 const ajvInstances = {};
+
 function getAjvInstance(version) {
   const normalized = version.toLowerCase();
   if (ajvInstances[normalized]) return ajvInstances[normalized];
@@ -71,6 +72,13 @@ schemaFiles.forEach(file => {
       totalErrors++;
     } else {
       console.log(`✅ Valid Schema: ${file}`);
+	  
+	  const validate = ajv.compile(schema);
+	  // Manually loop through your metadata examples to test them
+	  schema.examples.forEach((example, index) => {
+	    const isValid = validate(example);
+	    console.log(`   Example #${index} valid?`, isValid); 
+	  });
     }
     console.log('---');
   } catch (err) {
@@ -85,4 +93,5 @@ if (totalErrors > 0) {
   console.error(`\nBuild Failed: ${totalErrors} schema file(s) failed validation.`);
   process.exit(1);
 }
+
 console.log('\n🎉 All schema files passed structural verification!');
