@@ -31,7 +31,7 @@
   "examples": [
     {
       "id": "urn:event:1234567890",
-      "name": "my event",
+      "name1": "my event",
       "timestamp": 1622548800000,
       "content": {
         "id": "urn:object:12345",
