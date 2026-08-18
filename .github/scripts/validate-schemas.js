@@ -121,8 +121,8 @@ schemaFiles.forEach(file => validateSchemaFile(file));
 
 // Block CI pipeline if structural issues exist
 if (totalErrors > 0) {
-  console.error(`\nBuild Failed: ${totalErrors} schema file(s) failed validation.`);
-  process.exit(1);
+  console.log(`\n❌ Build Failed: ${totalErrors} schema file(s) failed validation.`);
+  process.exitCode = 1;
+} else {
+  console.log(`\n🎉 All schemas validated successfully!`);
 }
-
-console.log('\n🎉 All schema files passed structural verification!');
