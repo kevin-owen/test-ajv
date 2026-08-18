@@ -57,7 +57,7 @@ schemaFiles.forEach(file => {
     const ajv = getAjvInstance(chosenVersion);
 
     // 3. Print out clean tracking logs for audit visibility
-    const versionLabel = chosenVersion.includes('http') 
+    const versionLabel = chosenVersion.includes('http')
       ? chosenVersion.split('/').slice(-2, -1)[0] // Extracts 'draft-07' or '2020-12' cleanly
       : chosenVersion;
 
@@ -67,24 +67,37 @@ schemaFiles.forEach(file => {
     const isValidSchema = ajv.validateSchema(schema);
 
     if (!isValidSchema) {
+
       console.error(`❌ Invalid Schema Structure in: ${file}`);
       console.error(JSON.stringify(ajv.errors, null, 2));
       totalErrors++;
+
     } else {
+
       console.log(`✅ Valid Schema: ${file}`);
-	  
-	  const validate = ajv.compile(schema);
-	  // Manually loop through your metadata examples to test them
-	  schema.examples.forEach((example, index) => {
-	    const isValid = validate(example);
-	    console.log(`   Example #${index} valid?`, isValid); 
-	  });
+
+      const validate = ajv.compile(schema);
+      // Manually loop through your metadata examples to test them
+      schema.examples.forEach((example, index) => {
+        const isValid = validate(example);
+        if (isValid) {
+          console.log(`   ✅ Example #${index} is valid`);
+        }
+        else {
+          console.log(`   ❌ Example #${index} is NOT valid`);
+          totalErrors++;
+        }
+      });
     }
+
     console.log('---');
+
   } catch (err) {
+
     console.error(`❌ Failed to process file ${file}:`, err.message);
     totalErrors++;
     console.log('---');
+
   }
 });
 
