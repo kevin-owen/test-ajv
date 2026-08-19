@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/.github/scripts/tests/invalid-naming/file.with.dots.schema.json",
+  "$id": "https://schemas.test.com/tests/invalid-naming/file.with.dots.schema.json",
   "title": "Test - multiple dots in name (should fail)",
   "type": "object",
   "properties": {

@@ -116,21 +116,21 @@ function validateSchemaFile(file) {
     // Validate file naming conventions
     const namingErrors = validateFileNaming(file);
     if (namingErrors.length > 0) {
-      console.log(`Naming: ❌ not kebab-case`);
+      console.log(`Naming: ❌ not valid`);
       namingErrors.forEach(err => console.log(`  - ${err}`));
       totalErrors++;
     } else {
-      console.log(`Naming: ✅ kebab-case`);
+      console.log(`Naming: ✅ valid`);
     }
 
     // Validate $id and $ref format
     const idRefErrors = validateIdAndRefs(schema, file);
     if (idRefErrors.length > 0) {
-      console.log(`$id/$ref: ❌ invalid`);
+      console.log(`Identifiers: ❌ not valid`);
       idRefErrors.forEach(err => console.log(`  - ${err}`));
       totalErrors++;
     } else {
-      console.log(`$id/$ref: ✅ valid`);
+      console.log(`Identifiers: ✅ valid`);
     }
 
     // 4. Validate the schema structure
@@ -138,7 +138,7 @@ function validateSchemaFile(file) {
 
     if (!isValidSchema) {
 
-      console.log(`Schema valid: ❌`);
+      console.log(`Schema: ❌ not valid`);
       console.log(JSON.stringify(ajv.errors, null, 2));
       totalErrors++;
 
