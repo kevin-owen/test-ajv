@@ -21,4 +21,4 @@ jobs:
         env:
           SCHEMA_PATH: "**/*.schema.json"        # Supports  wildcards
           SCHEMA_VERSION: "draft2020"            # Options: 'draft7', 'draft2019', 'draft2020'
-        run: node .github/scripts/validate-schemas.js
+        run: node .github/scripts/validate-schemas/validate-schemas.js

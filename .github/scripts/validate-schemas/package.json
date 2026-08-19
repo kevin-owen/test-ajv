@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "JSON Schema validation for test-ajv",
   "scripts": {
-    "validate": "cross-env SCHEMA_PATH=\"../../**/*.schema.json\" node validate-schemas.js",
+    "validate": "cross-env SCHEMA_PATH=\"../../../**/*.schema.json\" node validate-schemas.js",
     "test": "cross-env SCHEMA_PATH=\"tests/**/*.schema.json\" node validate-schemas.js"
   },
   "dependencies": {
