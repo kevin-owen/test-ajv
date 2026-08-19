@@ -1,0 +1,20 @@
+{
+  "name": "test-ajv",
+  "version": "1.0.0",
+  "description": "JSON Schema validation for test-ajv",
+  "scripts": {
+    "validate": "cross-env SCHEMA_PATH=\"../../**/*.schema.json\" node validate-schemas.js",
+    "test": "cross-env SCHEMA_PATH=\"tests/**/*.schema.json\" node validate-schemas.js"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "eslint": "^10.8.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

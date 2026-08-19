@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.test.com/tests/invalid-refs/wrong-base-url-ref.schema.json",
+  "title": "Test - wrong base URL in $ref (should fail)",
+  "type": "object",
+  "properties": {
+    "content": {
+      "$ref": "https://example.com/objects/v1/object.schema.json"
+    }
+  },
+  "examples": [
+    { "content": { "id": "test", "name": "test" } }
+  ]
+}

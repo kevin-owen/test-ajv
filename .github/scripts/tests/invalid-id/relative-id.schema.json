@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "relative-path.schema.json",
+  "title": "Test - relative $id (should fail)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" }
+  },
+  "examples": [
+    { "id": "test" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.test.com/tests/valid-edge-cases/multiple-extensions.test.schema.json",
+  "title": "Test - multiple extensions (should pass)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" }
+  },
+  "examples": [
+    { "id": "test" }
+  ]
+}

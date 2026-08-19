@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.test.com/wrong/path/here.schema.json",
+  "title": "Test - $id doesn't match file path (should fail)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" }
+  },
+  "examples": [
+    { "id": "test" }
+  ]
+}

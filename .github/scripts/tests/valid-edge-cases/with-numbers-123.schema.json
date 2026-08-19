@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.test.com/tests/valid-edge-cases/with-numbers-123.schema.json",
+  "title": "Test - numbers in name (should pass)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" }
+  },
+  "examples": [
+    { "id": "test" }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/tests/invalid-id/wrong-base-url.schema.json",
+  "title": "Test - wrong base URL in $id (should fail)",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" }
+  },
+  "examples": [
+    { "id": "test" }
+  ]
+}
