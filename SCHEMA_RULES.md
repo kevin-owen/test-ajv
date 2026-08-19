@@ -8,6 +8,7 @@
 - [ ] Single hyphens (not double `--`)
 - [ ] No underscores
 - [ ] Start with a letter
+- [ ] **Extension must be exactly `.schema.json`** (no other dots allowed)
 
 ### $id Field
 - [ ] Fully qualified URL: `https://schemas.test.com/path/to/file.schema.json`
@@ -35,6 +36,8 @@
 | `MySchema.json` | `my-schema.schema.json` | kebab-case |
 | `my_schema.json` | `my-schema.schema.json` | No underscores |
 | `my--schema.json` | `my-schema.schema.json` | No double hyphens |
+| `file.test.schema.json` | `file-test.schema.json` | No dots in name (only `.schema.json` extension) |
+| `my.file.schema.json` | `my-file.schema.json` | No dots in name |
 | `SCHEMA/file.json` | `schema/file.json` | Lowercase only |
 | `"$id": "file.json"` | `"$id": "https://schemas.test.com/path/file.json"` | Fully qualified |
 | `"$id": "https://example.com/..."` | `"$id": "https://schemas.test.com/..."` | Correct base URL |

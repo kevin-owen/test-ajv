@@ -29,6 +29,9 @@
     <File Path=".github/scripts/tests/nested-refs/item.schema.json" />
     <File Path=".github/scripts/tests/nested-refs/parent.schema.json" />
   </Folder>
+  <Folder Name="/.github/scripts/tests/valid-cases/">
+    <File Path=".github/scripts/tests/valid-cases/object.schema.json" />
+  </Folder>
   <Folder Name="/.github/scripts/tests/valid-edge-cases/">
     <File Path=".github/scripts/tests/valid-edge-cases/multiple-extensions.test.schema.json" />
     <File Path=".github/scripts/tests/valid-edge-cases/single-letter-v1.schema.json" />

@@ -189,12 +189,23 @@ function writeSeperator() {
 
 function isKebabCase(name) {
   // Kebab case: lowercase letters, numbers, and hyphens
-  // Allows file extensions like .schema.json
-  // Pattern: starts with letter, then letters/numbers/hyphens, then optional .extensions
-  // Examples: my-file, my-file.json, object.schema.json, base-event.schema.json
-  return /^[a-z]([a-z0-9-])*(\.[a-z0-9-]+)*$/.test(name) && 
-         !name.includes('--') &&  // No consecutive hyphens
-         !name.match(/[-.]$/);     // Cannot end with hyphen or dot
+  // Files must end with .schema.json extension (no other dots allowed)
+  // Folders must be kebab-case without dots
+  // Examples: 
+  //   Valid: base-event.schema.json, my-object.schema.json, v1, events
+  //   Invalid: my.file.schema.json, file.test.schema.json, file.json, MyFile.schema.json
+
+  // Check if it's a schema file
+  if (name.endsWith('.schema.json')) {
+    const nameWithoutExt = name.slice(0, -'.schema.json'.length);
+    // Name part (before .schema.json) must be kebab-case without any dots
+    return /^[a-z][a-z0-9-]*$/.test(nameWithoutExt) && 
+           !nameWithoutExt.includes('--');  // No consecutive hyphens
+  }
+
+  // For folders and non-schema files, standard kebab-case (no dots)
+  return /^[a-z][a-z0-9-]*$/.test(name) && 
+         !name.includes('--');  // No consecutive hyphens
 }
 
 function validateFileNaming(filePath) {
@@ -202,8 +213,8 @@ function validateFileNaming(filePath) {
   const parts = filePath.split(/[/\\]/); // Handle both forward and back slashes
 
   for (const part of parts) {
-    // Skip empty parts, current directory marker, and parent directory marker
-    if (!part || part === '.' || part === '..') continue;
+    // Skip empty parts, current directory marker, parent directory marker, and hidden folders
+    if (!part || part === '.' || part === '..' || part.startsWith('.')) continue;
 
     if (!isKebabCase(part)) {
       errors.push(`Path component "${part}" is not in kebab-case`);

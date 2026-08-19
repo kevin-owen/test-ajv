@@ -13,14 +13,13 @@ This script validates JSON schemas to ensure they follow organizational standard
 ### 2. **Naming Convention Validation**
 Enforces kebab-case naming for all files and folders:
 - ✅ Valid: `base-event.schema.json`, `my-object.schema.json`, `v1`, `test-123`
-- ❌ Invalid: `BaseEvent.json`, `my_object.schema.json`, `file--name.json`, `UPPERCASE`
+- ❌ Invalid: `BaseEvent.json`, `my_object.schema.json`, `file--name.json`, `UPPERCASE`, `file.test.schema.json`
 
 **Rules:**
 - Must start with a lowercase letter
 - Can contain lowercase letters, numbers, and hyphens
 - Cannot have consecutive hyphens (`--`)
-- Cannot end with hyphen or dot
-- Allows multiple dot-separated extensions (e.g., `.test.schema.json`)
+- **Schema files must end with exactly `.schema.json`** (no other dots in the filename)
 
 ### 3. **$id Validation**
 - Must be a fully qualified absolute URL

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/tests/valid-edge-cases/multiple-extensions.test.schema.json",
-  "title": "Test - multiple extensions (should pass)",
+  "$id": "https://schemas.test.com/.github/scripts/tests/invalid-naming/file.with.dots.schema.json",
+  "title": "Test - multiple dots in name (should fail)",
   "type": "object",
   "properties": {
     "id": { "type": "string" }
