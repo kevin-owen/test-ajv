@@ -17,6 +17,11 @@
       "description": "Event publication time in milliseconds since the UNIX epoch (January 1, 1970 00:00:00 UTC)",
       "type": "integer"
     },
+    "date": {
+      "description": "The date of the event in YYYY-MM-DD format",
+      "type": "string",
+      "format": "date-time"
+    },
     "content": {
       "description": "The content of the event.",
       "$ref": "https://schemas.test.com/objects/v1/object.schema.json"
@@ -33,18 +38,22 @@
       "id": "urn:event:1234567890",
       "name": "my event",
       "timestamp": 1622548800000,
+      "date": "2021-06-01T00:00:00Z",
       "content": {
         "id": "urn:object:12345",
-        "name": "my object"
+        "name": "my object",
+        "code": "ABC123"
       }
     },
     {
       "id": "urn:event:9876543210",
-      "name": "my otherevent",
+      "name": "my other event",
       "timestamp": 1622548800111,
+      "date": "2022-06-01T00:00:00Z",
       "content": {
         "id": "urn:object:54321",
-        "name": "my other object"
+        "name": "my other object",
+        "code": "XYZ789"
       }
     }
   ]

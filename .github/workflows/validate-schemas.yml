@@ -15,7 +15,7 @@ jobs:
           node-version: 26
 
       - name: Install Dependencies
-        run: npm install ajv glob
+        run: npm install ajv ajv-formats ajv-keywords glob
 
       - name: Run Schema Validation
         env:

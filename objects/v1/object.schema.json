@@ -12,16 +12,23 @@
     "name": {
       "description": "A name used to describe the object",
       "type": "string"
+    },
+    "code": {
+      "description": "A code used to identify the object",
+      "type": "string",
+      "pattern": "^[A-Z]{3}[0-9]{3}$"
     }
   },
   "required": [
     "id",
-    "name"
+    "name",
+    "code"
   ],
   "examples": [
     {
       "id": "urn:object:1234567890",
-      "name": "my object"
+      "name": "my object",
+      "code": "ABC123"
     }
   ]
 }

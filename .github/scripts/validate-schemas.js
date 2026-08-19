@@ -1,6 +1,6 @@
 const fs = require('fs');
-const { globSync } = require('glob');
 const path = require('path');
+const { globSync } = require('glob');
 
 // Parse inputs from environment variables
 const SCHEMA_PATTERN = process.env.SCHEMA_PATH;
@@ -93,8 +93,12 @@ function getAjvInstance(version) {
     Ajv = require('ajv'); // Defaults to Draft 7
   }
 
-  ajvInstances[normalized] = new Ajv({ allErrors: true });
-  return ajvInstances[normalized];
+  const ajv = new Ajv({ allErrors: true });
+  require('ajv-formats')(ajv);
+  require("ajv-keywords")(ajv)
+  ajvInstances[normalized] = ajv;
+
+  return ajv;
 }
 
 function validateSchemaFile(file) {
