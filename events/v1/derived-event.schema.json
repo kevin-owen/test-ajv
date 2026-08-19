@@ -1,18 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/events/v1/event.schema.json",
+  "$id": "https://schemas.test.com/events/v1/derived-event.schema.json",
   "title": "Generic test event",
   "description": "Represents a generic test event",
   "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://schemas.test.com/events/v1/base-event.schema.json"
+    }
+  ],
   "properties": {
-    "id": {
-      "description": "The event unique identifier",
-      "type": "string"
-    },
-    "name": {
-      "description": "A name used to describe the event type being raised",
-      "type": "string"
-    },
     "timestamp": {
       "description": "Event publication time in milliseconds since the UNIX epoch (January 1, 1970 00:00:00 UTC)",
       "type": "integer"
@@ -23,8 +20,6 @@
     }
   },
   "required": [
-    "id",
-    "name",
     "timestamp",
     "content"
   ],
@@ -36,15 +31,6 @@
       "content": {
         "id": "urn:object:12345",
         "name": "my object"
-      }
-    },
-    {
-      "id": "urn:event:9876543210",
-      "name": "my otherevent",
-      "timestamp": 1622548800111,
-      "content": {
-        "id": "urn:object:54321",
-        "name": "my other object"
       }
     }
   ]

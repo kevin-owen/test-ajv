@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/events/v1/event.schema.json",
+  "$id": "https://schemas.test.com/events/v1/broken-event.schema.json",
   "title": "Generic test event",
   "description": "Represents a generic test event",
   "type": "object",
@@ -31,20 +31,11 @@
   "examples": [
     {
       "id": "urn:event:1234567890",
-      "name": "my event",
+      "banana": "my event",
       "timestamp": 1622548800000,
       "content": {
         "id": "urn:object:12345",
-        "name": "my object"
-      }
-    },
-    {
-      "id": "urn:event:9876543210",
-      "name": "my otherevent",
-      "timestamp": 1622548800111,
-      "content": {
-        "id": "urn:object:54321",
-        "name": "my other object"
+        "goat": "my object"
       }
     }
   ]

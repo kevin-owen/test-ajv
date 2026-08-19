@@ -45,7 +45,42 @@ function getSchemaVersion(schema) {
 }
 
 function writeSeperator() {
-  console.log('────────────────────────────────────────────────────────────────────');
+  console.log('\n────────────────────────────────────────────────────────────────────\n');
+}
+
+function loadSchemas() {
+  // Resolve wildcard glob patterns for schemas
+  const schemaFiles = globSync(SCHEMA_PATTERN);
+
+  if (schemaFiles.length === 0) {
+    console.error(`❌ Error: No schema files found matching pattern "${SCHEMA_PATTERN}"`);
+    process.exit(1);
+  }
+
+  writeSeperator();
+  console.log(`🔍 Found ${schemaFiles.length} schema file(s) to validate.`);
+
+  // Pre-load all schemas into AJV instances to resolve $ref references
+  schemaFiles.forEach(file => {
+    try {
+      const rawContent = fs.readFileSync(file, 'utf8');
+      const schema = JSON.parse(rawContent);
+      const schemaVersion = getSchemaVersion(schema);
+      const ajv = getAjvInstance(schemaVersion);
+
+      // Add schema to AJV by its $id so references can be resolved
+      if (schema.$id) {
+        ajv.addSchema(schema);
+        console.log(`  Loaded: ${schema.$id}`);
+      }
+    } catch (err) {
+      console.log(`  ⚠️ Failed to pre-load ${file}: ${err.message}`);
+    }
+  });
+
+  writeSeperator();
+
+  return schemaFiles;
 }
 
 function validateSchemaFile(file) {
@@ -75,17 +110,25 @@ function validateSchemaFile(file) {
 
     } else {
 
-      const validate = ajv.compile(schema);
-      console.log(`Schema valid: ✅`);
+      // Get or compile the validator
+      // If schema was pre-loaded with $id, get it; otherwise compile it
+      let validate;
+      if (schema.$id && ajv.getSchema(schema.$id)) {
+        validate = ajv.getSchema(schema.$id);
+      } else {
+        validate = ajv.compile(schema);
+      }
+
+      console.log(`Schema: ✅ valid`);
 
       // Manually loop through your metadata examples to test them
       schema.examples.forEach((example, index) => {
         const isValid = validate(example);
         if (isValid) {
-          console.log(`Example #${index + 1} valid: ✅`);
+          console.log(`Example #${index + 1}: ✅ valid`);
         }
         else {
-          console.log(`Example #${index + 1} valid: ❌`);
+          console.log(`Example #${index + 1}: ❌ not valid`);
           console.log("Errors:", validate.errors);
           totalErrors++;
         }
@@ -94,7 +137,7 @@ function validateSchemaFile(file) {
 
   }
   catch (err) {
-    console.log(`Schema valid: ❌`);
+    console.log(`Schema: ❌ not valid`);
     console.log(`Error:`, err.message);
     totalErrors++;
   }
@@ -103,26 +146,18 @@ function validateSchemaFile(file) {
   }
 }
 
-// Resolve wildcard glob patterns for schemas
-const schemaFiles = globSync(SCHEMA_PATTERN);
-
-if (schemaFiles.length === 0) {
-  console.error(`❌ Error: No schema files found matching pattern "${SCHEMA_PATTERN}"`);
-  process.exit(1);
-}
-
 let totalErrors = 0;
 
-writeSeperator();
-console.log(`\n🔍 Found ${schemaFiles.length} schema file(s) to validate.\n`);
-writeSeperator();
+const schemaFiles = loadSchemas();
 
-schemaFiles.forEach(file => validateSchemaFile(file));
+schemaFiles.forEach(
+  file => validateSchemaFile(file)
+);
 
 // Block CI pipeline if structural issues exist
 if (totalErrors > 0) {
-  console.log(`\n❌ Build Failed: ${totalErrors} schema file(s) failed validation.`);
+  console.log(`❌ Build Failed: ${totalErrors} schema file(s) failed validation.\n`);
   process.exitCode = 1;
 } else {
-  console.log(`\n🎉 All schemas validated successfully!`);
+  console.log(`🎉 All schemas validated successfully!\n`);
 }
