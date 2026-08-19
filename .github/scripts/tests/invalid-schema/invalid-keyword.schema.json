@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/objects/v1/broken-object.schema.json",
+  "$id": "https://schemas.test.com/tests/invalid-schema/invalid-keyword.schema.json",
   "title": "Generic test object",
   "description": "Represents a generic test object",
   "type": "object",
@@ -18,10 +18,11 @@
     "id",
     "name"
   ],
+  "goat": "banana",
   "examples": [
     {
       "id": "urn:object:1234567890",
-      "banana": "my object"
+      "name": "my object"
     }
   ]
 }

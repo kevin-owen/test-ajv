@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/events/v1/broken-event.schema.json",
+  "$id": "https://schemas.test.com/tests/invalid-example/invalid-nested-example.schema.json",
   "title": "Generic test event",
   "description": "Represents a generic test event",
   "type": "object",
@@ -19,7 +19,7 @@
     },
     "content": {
       "description": "The content of the event.",
-      "$ref": "https://schemas.test.com/objects/v1/object.schema.json"
+      "$ref": "https://schemas.test.com/tests/valid-cases/object.schema.json"
     }
   },
   "required": [

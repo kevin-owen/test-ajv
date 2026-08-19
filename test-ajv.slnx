@@ -7,6 +7,10 @@
   <Folder Name="/.github/scripts/tests/">
     <File Path=".github/scripts/tests/TEST_RESULTS.md" />
   </Folder>
+  <Folder Name="/.github/scripts/tests/invalid-example/">
+    <File Path=".github/scripts/tests/invalid-example/invalid-example.schema.json" />
+    <File Path=".github/scripts/tests/invalid-example/invalid-nested-example.schema.json" />
+  </Folder>
   <Folder Name="/.github/scripts/tests/invalid-id/">
     <File Path=".github/scripts/tests/invalid-id/mismatched-path.schema.json" />
     <File Path=".github/scripts/tests/invalid-id/relative-id.schema.json" />
@@ -14,12 +18,16 @@
   </Folder>
   <Folder Name="/.github/scripts/tests/invalid-naming/">
     <File Path=".github/scripts/tests/invalid-naming/BadFileName.schema.json" />
+    <File Path=".github/scripts/tests/invalid-naming/file.with.dots.schema.json" />
     <File Path=".github/scripts/tests/invalid-naming/file--double-hyphen.schema.json" />
     <File Path=".github/scripts/tests/invalid-naming/snake_case_name.schema.json" />
   </Folder>
   <Folder Name="/.github/scripts/tests/invalid-refs/">
     <File Path=".github/scripts/tests/invalid-refs/relative-ref.schema.json" />
     <File Path=".github/scripts/tests/invalid-refs/wrong-base-url-ref.schema.json" />
+  </Folder>
+  <Folder Name="/.github/scripts/tests/invalid-schema/">
+    <File Path=".github/scripts/tests/invalid-schema/invalid-keyword.schema.json" />
   </Folder>
   <Folder Name="/.github/scripts/tests/INVALID_FOLDER/">
     <File Path=".github/scripts/tests/INVALID_FOLDER/test.schema.json" />
@@ -33,7 +41,6 @@
     <File Path=".github/scripts/tests/valid-cases/object.schema.json" />
   </Folder>
   <Folder Name="/.github/scripts/tests/valid-edge-cases/">
-    <File Path=".github/scripts/tests/valid-edge-cases/multiple-extensions.test.schema.json" />
     <File Path=".github/scripts/tests/valid-edge-cases/single-letter-v1.schema.json" />
     <File Path=".github/scripts/tests/valid-edge-cases/with-numbers-123.schema.json" />
   </Folder>
