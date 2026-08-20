@@ -2,9 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { globSync } = require('glob');
 
+const formats = {
+  reset: '\x1b[0m',
+  bold: '\x1b[1m'
+}
+
 // ANSI color codes
 const colors = {
-  reset: '\x1b[0m',
   green: '\x1b[32m',
   red: '\x1b[31m',
   yellow: '\x1b[33m',
@@ -134,7 +138,7 @@ function validateSchemaFile(file) {
       ? schemaVersion.split('/').slice(-2, -1)[0] // Extracts 'draft-07' or '2020-12' cleanly
       : schemaVersion;
 
-    logInfo(`Testing: ${file}`);
+    logInfo(`Testing: ${formats.bold}${file}${formats.reset}`);
     logInfo(`Version: ${schemaVersion}`);
 
     // Validate file naming conventions
@@ -321,7 +325,7 @@ function writeSeperator() {
 }
 
 function log(color, message) {
-  console.log(`${colors[color]}${message}${colors.reset}`);
+  console.log(`${color}${message}${formats.reset}`);
 }
 
 function logValid(message) {
@@ -333,17 +337,17 @@ function logInvalid(message) {
 }
 
 function logSuccess(message) {
-  log('green', message);
+  log(colors.green, message);
 }
 
 function logError(message) {
-  log('red', message);
+  log(colors.red, message);
 }
 
 function logWarning(message) {
-  log('yellow', message);
+  log(colors.yellow, message);
 }
 
 function logInfo(message) {
-  log('cyan', message);
+  log(colors.cyan, message);
 }
