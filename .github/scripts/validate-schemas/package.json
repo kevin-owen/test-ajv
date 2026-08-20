@@ -4,7 +4,8 @@
   "description": "JSON Schema validation for test-ajv",
   "scripts": {
     "validate": "cross-env SCHEMA_PATH=\"../../../**/*.schema.json\" node validate-schemas.js",
-    "test": "cross-env SCHEMA_PATH=\"tests/**/*.schema.json\" node validate-schemas.js"
+    "validate-tests": "cross-env SCHEMA_PATH=\"tests/**/*.schema.json\" node validate-schemas.js",
+    "test": "node test-validation.js"
   },
   "dependencies": {
     "ajv": "^8.12.0",

@@ -1,16 +1,16 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/tests/nested-refs/parent.schema.json",
+  "$id": "https://schemas.test.com/tests/valid-nested-refs/parent.schema.json",
   "title": "Test - nested $refs (should pass)",
   "type": "object",
   "properties": {
     "child": {
-      "$ref": "https://schemas.test.com/tests/nested-refs/child.schema.json"
+      "$ref": "https://schemas.test.com/tests/valid-nested-refs/child.schema.json"
     },
     "items": {
       "type": "array",
       "items": {
-        "$ref": "https://schemas.test.com/tests/nested-refs/item.schema.json"
+        "$ref": "https://schemas.test.com/tests/valid-nested-refs/item.schema.json"
       }
     }
   },

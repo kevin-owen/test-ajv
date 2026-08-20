@@ -1,12 +1,12 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.test.com/tests/nested-refs/child.schema.json",
-  "title": "Child schema",
+  "$id": "https://schemas.test.com/tests/valid-nested-refs/item.schema.json",
+  "title": "Item schema",
   "type": "object",
   "properties": {
     "id": { "type": "string" }
   },
-  "required": ["id"],
+  "required": [ "id" ],
   "examples": [
     { "id": "test" }
   ]

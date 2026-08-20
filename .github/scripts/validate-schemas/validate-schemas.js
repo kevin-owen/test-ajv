@@ -2,6 +2,16 @@ const fs = require('fs');
 const path = require('path');
 const { globSync } = require('glob');
 
+// ANSI color codes
+const colors = {
+  reset: '\x1b[0m',
+  green: '\x1b[32m',
+  red: '\x1b[31m',
+  yellow: '\x1b[33m',
+  cyan: '\x1b[36m',
+  gray: '\x1b[90m'
+};
+
 // Parse inputs from environment variables
 const SCHEMA_PATTERN = process.env.SCHEMA_PATH;
 const DEFAULT_VERSION = process.env.SCHEMA_VERSION || 'draft2020';
@@ -23,15 +33,17 @@ loadSchemas().forEach(
 
 // Block CI pipeline if structural issues exist
 if (totalErrors > 0) {
-  console.log(`🚫 Build Failed: ${totalErrors} schema file(s) failed validation.\n`);
+  logError(`🚫 FAIL: ${totalErrors} schema file(s) failed validation.`);
+  writeSeperator();
   process.exitCode = 1;
 }
 else {
-  console.log(`🎉 All schemas validated successfully!\n`);
+  logSuccess(`🎉 All schemas validated successfully!`);
+  writeSeperator();
 }
 
 function loadSchemas() {
-  // Resolve wildcard glob patterns for schemas
+  // Resolve wildcard glob patterns for schemas to validate
   const schemaFiles = globSync(SCHEMA_PATTERN);
 
   if (schemaFiles.length === 0) {
@@ -42,8 +54,16 @@ function loadSchemas() {
   writeSeperator();
   console.log(`🔍 Found ${schemaFiles.length} schema file(s) to validate.`);
 
-  // Pre-load all schemas into AJV instances to resolve $ref references
-  schemaFiles.forEach(file => {
+  // For $ref resolution: always pre-load ALL schemas (not just the ones to validate)
+  // This ensures that cross-references work even when validating a single file
+  // Use the same base pattern/directory as SCHEMA_PATTERN to find related schemas
+  const basePath = SCHEMA_PATTERN.includes('/') || SCHEMA_PATTERN.includes('\\') 
+    ? SCHEMA_PATTERN.substring(0, Math.max(SCHEMA_PATTERN.lastIndexOf('/'), SCHEMA_PATTERN.lastIndexOf('\\')))
+    : '.';
+  const allSchemaPattern = `${basePath}/**/*.schema.json`;
+  const allSchemaFiles = globSync(allSchemaPattern);
+
+  allSchemaFiles.forEach(file => {
     try {
       const rawContent = fs.readFileSync(file, 'utf8');
       const schema = JSON.parse(rawContent);
@@ -114,27 +134,27 @@ function validateSchemaFile(file) {
       ? schemaVersion.split('/').slice(-2, -1)[0] // Extracts 'draft-07' or '2020-12' cleanly
       : schemaVersion;
 
-    console.log(`Testing: ${file}`);
-    console.log(`Version: ${schemaVersion}`);
+    logInfo(`Testing: ${file}`);
+    logInfo(`Version: ${schemaVersion}`);
 
     // Validate file naming conventions
     const namingErrors = validateFileNaming(file);
     if (namingErrors.length > 0) {
-      console.log(`Naming: ❌ not valid`);
-      namingErrors.forEach(err => console.log(`  - ${err}`));
+      logInvalid(`Naming`);
+      namingErrors.forEach(err => logError(`  - ${err}`));
       totalErrors++;
     } else {
-      console.log(`Naming: ✅ valid`);
+      logValid(`Naming`);
     }
 
     // Validate $id and $ref format
     const idRefErrors = validateIdAndRefs(schema, file);
     if (idRefErrors.length > 0) {
-      console.log(`Identifiers: ❌ not valid`);
-      idRefErrors.forEach(err => console.log(`  - ${err}`));
+      logInvalid(`Identifiers`);
+      idRefErrors.forEach(err => logError(`  - ${err}`));
       totalErrors++;
     } else {
-      console.log(`Identifiers: ✅ valid`);
+      logValid(`Identifiers`);
     }
 
     // 4. Validate the schema structure
@@ -142,8 +162,8 @@ function validateSchemaFile(file) {
 
     if (!isValidSchema) {
 
-      console.log(`Schema: ❌ not valid`);
-      console.log(JSON.stringify(ajv.errors, null, 2));
+      logInvalid(`Schema`);
+      logError(`Errors: ${JSON.stringify(ajv.errors, null, 2)}`);
       totalErrors++;
 
     }
@@ -158,17 +178,17 @@ function validateSchemaFile(file) {
         validate = ajv.compile(schema);
       }
 
-      console.log(`Schema: ✅ valid`);
+      logValid(`Schema`);
 
       // Manually loop through your metadata examples to test them
       schema.examples.forEach((example, index) => {
         const isValid = validate(example);
         if (isValid) {
-          console.log(`Example #${index + 1}: ✅ valid`);
+          logValid(`Example #${index + 1}`);
         }
         else {
-          console.log(`Example #${index + 1}: ❌ not valid`);
-          console.log("Errors:", validate.errors);
+          logInvalid(`Example #${index + 1}`);
+          logError(`Errors: ${JSON.stringify(validate.errors, null, 2)}`);
           totalErrors++;
         }
       });
@@ -176,8 +196,8 @@ function validateSchemaFile(file) {
 
   }
   catch (err) {
-    console.log(`Schema: ❌ not valid`);
-    console.log(`Error:`, err.message);
+    logInvalid(`Schema`);
+    logError(`Error: ${err.message}`);
     totalErrors++;
   }
   finally {
@@ -185,11 +205,9 @@ function validateSchemaFile(file) {
   }
 }
 
-function writeSeperator() {
-  console.log('\n────────────────────────────────────────────────────────────────────\n');
-}
-
+// -----------------------------------------------
 // Validation helper functions
+// -----------------------------------------------
 
 function isKebabCase(name) {
   // Kebab case: lowercase letters, numbers, and hyphens
@@ -292,4 +310,40 @@ function validateIdAndRefs(schema, filePath) {
   checkRefs(schema);
 
   return errors;
+}
+
+// -----------------------------------------------
+// console helper functions
+// -----------------------------------------------
+
+function writeSeperator() {
+  console.log('\n────────────────────────────────────────────────────────────────────\n');
+}
+
+function log(color, message) {
+  console.log(`${colors[color]}${message}${colors.reset}`);
+}
+
+function logValid(message) {
+  logSuccess(`${message}: ✅ valid`);
+}
+
+function logInvalid(message) {
+  logError(`${message}: ❌ invalid`);
+}
+
+function logSuccess(message) {
+  log('green', message);
+}
+
+function logError(message) {
+  log('red', message);
+}
+
+function logWarning(message) {
+  log('yellow', message);
+}
+
+function logInfo(message) {
+  log('cyan', message);
 }

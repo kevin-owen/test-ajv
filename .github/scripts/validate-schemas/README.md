@@ -203,13 +203,33 @@ The script is designed to work in CI/CD pipelines:
 
 ## Testing
 
-See `tests/TEST_RESULTS.md` for comprehensive edge case testing results.
+### Automated Test Suite
 
-Test categories:
-- Valid edge cases (numbers, multiple extensions, nested refs)
-- Naming violations (camelCase, snake_case, double hyphens, uppercase)
-- $id violations (relative, wrong base URL, path mismatch)
-- $ref violations (relative, wrong base URL)
+Run the full test suite to verify validation rules work correctly:
+
+```bash
+cd .github/scripts/validate-schemas
+npm test
+```
+
+The test suite validates:
+- ✅ Valid files pass validation
+- ❌ Invalid files fail validation with correct error messages
+
+### Test Organization
+- `tests/valid-*` - Files that should pass
+- `tests/invalid-*` - Files that should fail
+- `tests/nested-refs` - Cross-file reference tests
+
+See `tests/README.md` for:
+- Complete test documentation
+- How to add new tests
+- Current test results
+- Known issues
+
+### Manual Testing
+
+See `tests/TEST_RESULTS.md` for comprehensive edge case testing results and examples.
 
 ## Configuration
 

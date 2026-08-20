@@ -3,6 +3,7 @@
   <Folder Name="/.github/scripts/" />
   <Folder Name="/.github/scripts/validate-schemas/">
     <File Path=".github/scripts/validate-schemas/package.json" />
+    <File Path=".github/scripts/validate-schemas/test-validation.js" />
     <File Path=".github/scripts/validate-schemas/validate-schemas.js" />
   </Folder>
   <Folder Name="/.github/scripts/validate-schemas/tests/">
@@ -33,10 +34,10 @@
   <Folder Name="/.github/scripts/validate-schemas/tests/INVALID_FOLDER/">
     <File Path=".github/scripts/validate-schemas/tests/INVALID_FOLDER/test.schema.json" />
   </Folder>
-  <Folder Name="/.github/scripts/validate-schemas/tests/nested-refs/">
-    <File Path=".github/scripts/validate-schemas/tests/nested-refs/child.schema.json" />
-    <File Path=".github/scripts/validate-schemas/tests/nested-refs/item.schema.json" />
-    <File Path=".github/scripts/validate-schemas/tests/nested-refs/parent.schema.json" />
+  <Folder Name="/.github/scripts/validate-schemas/tests/valid-nested-refs/">
+    <File Path=".github/scripts/validate-schemas/tests/valid-nested-refs/child.schema.json" />
+    <File Path=".github/scripts/validate-schemas/tests/valid-nested-refs/item.schema.json" />
+    <File Path=".github/scripts/validate-schemas/tests/valid-nested-refs/parent.schema.json" />
   </Folder>
   <Folder Name="/.github/scripts/validate-schemas/tests/valid-cases/">
     <File Path=".github/scripts/validate-schemas/tests/valid-cases/object.schema.json" />
